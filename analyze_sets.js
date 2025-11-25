@@ -64,26 +64,29 @@ function toTitleCase(str) {
     );
 }
 
-function analyzeSetlists(directory, yearsBack = null) {
+function analyzeSetlists(directory, startYear = null, endYear = null) {
     const artistCounter = {};
     const trackCounter = {};
 
     let files = getFiles(directory);
 
-    if (yearsBack !== null) {
-        const currentYear = new Date().getFullYear();
-        const cutoffYear = currentYear - yearsBack;
-
+    if (startYear !== null || endYear !== null) {
         files = files.filter(filePath => {
             const fileName = path.basename(filePath);
             const match = fileName.match(/^(\d{4})/);
             if (match) {
                 const fileYear = parseInt(match[1], 10);
-                return fileYear >= cutoffYear;
+                if (startYear !== null && fileYear < startYear) return false;
+                if (endYear !== null && fileYear > endYear) return false;
+                return true;
             }
             return false;
         });
-        console.log(`Filtering for files from ${cutoffYear} to ${currentYear}...`);
+        
+        let msg = "Filtering for files";
+        if (startYear) msg += ` from ${startYear}`;
+        if (endYear) msg += ` to ${endYear}`;
+        console.log(msg + "...");
     }
 
     console.log(`Found ${files.length} files to analyze...`);
@@ -128,28 +131,41 @@ const targetDirectory = process.cwd();
 
 // Parse arguments
 const args = process.argv.slice(2);
-let yearsBack = null;
-const yearsIndex = args.indexOf('--years');
-if (yearsIndex !== -1 && args[yearsIndex + 1]) {
-    yearsBack = parseInt(args[yearsIndex + 1], 10);
+
+let startYear = null;
+const startYearIndex = args.indexOf('--start-year');
+if (startYearIndex !== -1 && args[startYearIndex + 1]) {
+    startYear = parseInt(args[startYearIndex + 1], 10);
 }
 
-const { artistCounter, trackCounter } = analyzeSetlists(targetDirectory, yearsBack);
+let endYear = null;
+const endYearIndex = args.indexOf('--end-year');
+if (endYearIndex !== -1 && args[endYearIndex + 1]) {
+    endYear = parseInt(args[endYearIndex + 1], 10);
+}
+
+let limit = 20;
+const limitIndex = args.indexOf('--limit');
+if (limitIndex !== -1 && args[limitIndex + 1]) {
+    limit = parseInt(args[limitIndex + 1], 10);
+}
+
+const { artistCounter, trackCounter } = analyzeSetlists(targetDirectory, startYear, endYear);
 
 console.log("\n" + "=".repeat(30));
-console.log("TOP 20 ARTISTS");
+console.log(`TOP ${limit} ARTISTS`);
 console.log("=".repeat(30));
 
-const topArtists = getTop(artistCounter, 20);
+const topArtists = getTop(artistCounter, limit);
 topArtists.forEach((item, index) => {
     console.log(`${index + 1}. ${item[0]} (${item[1]} plays)`);
 });
 
 console.log("\n" + "=".repeat(30));
-console.log("TOP 20 TRACKS");
+console.log(`TOP ${limit} TRACKS`);
 console.log("=".repeat(30));
 
-const topTracks = getTop(trackCounter, 20);
+const topTracks = getTop(trackCounter, limit);
 topTracks.forEach((item, index) => {
     console.log(`${index + 1}. ${item[0]} (${item[1]} plays)`);
 });
