@@ -16,7 +16,11 @@ YYYY-MM-DD-EVENT-TYPE
 ex. 2018-01-01-Lazercrunk_Ft_Starkey-Club.txt
 ```
 
-https://linktr.ee/cutups
+## Contact me
+Email geoff.maddock@gmail.com
+Web https://linktr.ee/cutups
+Blog https://blog.cutupsmethod.com
+Soundcloud https://soundcloud.com/cutups
 
 ## Notes
 This is an archive of setlists from mixes and live gigs by dj Cutups (Geoff Maddock)
