@@ -34,7 +34,7 @@ anmon - cyber
 and - warming up
 bombardier - feed 
 deathmachine - exoskeleton
-drumpcorps - geist
+drumcorps - geist
 divtech - flesh negative
 smyla - shuriken
 aaron spectre - create the future
