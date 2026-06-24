@@ -2,6 +2,20 @@
 
 Repository of setlists for live sets and recorded mixes.
 
+## Python Setup
+
+Install script dependencies with the same interpreter you will use to run the script:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+If you use the repo virtual environment, run:
+
+```bash
+.venv/bin/python -m pip install -r requirements.txt
+```
+
 ## Formatting
 A mix of txt, csv and other.
 
